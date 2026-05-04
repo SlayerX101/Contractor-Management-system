@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Electrician Contract Calculator - Version 1</title>
+    <style>
+      body {
+        margin: 0;
+        background: #eef3f1;
+        color: #18201f;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      main {
+        width: min(980px, 100%);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      h1 {
+        margin: 0 0 18px;
+        font-size: 38px;
+      }
+
+      section {
+        margin-bottom: 16px;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #d8dfdc;
+        border-radius: 8px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .metric {
+        padding: 16px;
+        background: #f8fbfa;
+        border: 1px solid #d8dfdc;
+        border-radius: 8px;
+      }
+
+      .metric span {
+        display: block;
+        color: #687371;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 24px;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        color: #687371;
+        font-weight: 700;
+      }
+
+      input,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      textarea {
+        border: 1px solid #d8dfdc;
+        border-radius: 6px;
+        padding: 12px;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 6px;
+        background: #156f5b;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid #d8dfdc;
+        padding: 12px 8px;
+        text-align: left;
+      }
+
+      @media (max-width: 760px) {
+        .grid,
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Electrician Contract Calculator</h1>
+
+      <section class="grid">
+        <div class="metric"><span>Tender Amount</span><strong id="summaryTender">R 0.00</strong></div>
+        <div class="metric"><span>Amount Paid</span><strong id="summaryPaid">R 0.00</strong></div>
+        <div class="metric"><span>Balance</span><strong id="summaryBalance">R 0.00</strong></div>
+        <div class="metric"><span>Project Duration</span><strong id="summaryDuration">0 days</strong></div>
+      </section>
+
+      <section>
+        <form id="contractForm">
+          <label>Company that hired you <input id="company" required /></label>
+          <div class="row">
+            <label>Tender amount total <input id="tenderAmount" type="number" min="0" step="0.01" required /></label>
+            <label>Amount paid <input id="amountPaid" type="number" min="0" step="0.01" required /></label>
+          </div>
+          <div class="row">
+            <label>Project start date <input id="startDate" type="date" required /></label>
+            <label>Project end date <input id="endDate" type="date" required /></label>
+          </div>
+          <label>Project notes <textarea id="notes" rows="3"></textarea></label>
+          <button type="submit">Save Contract</button>
+        </form>
+      </section>
+
+      <section>
+        <table>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Tender</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody id="contractsTable"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      const money = new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR" });
+      const table = document.querySelector("#contractsTable");
+      let contracts = [
+        ["Bright Mall Pty Ltd", 185000, 120000, "2026-04-01", "2026-05-15"],
+        ["Sunrise Apartments", 96500, 96500, "2026-03-10", "2026-04-05"],
+        ["Metro Cold Storage", 248750, 75000, "2026-05-06", "2026-07-18"],
+      ];
+
+      function duration(start, end) {
+        return Math.floor((new Date(end) - new Date(start)) / 86400000) + 1;
+      }
+
+      function render() {
+        table.innerHTML = "";
+        let tender = 0;
+        let paid = 0;
+        let days = 0;
+
+        contracts.forEach((contract) => {
+          tender += contract[1];
+          paid += contract[2];
+          days += duration(contract[3], contract[4]);
+          table.insertAdjacentHTML(
+            "beforeend",
+            `<tr><td>${contract[0]}</td><td>${money.format(contract[1])}</td><td>${money.format(contract[2])}</td><td>${money.format(contract[1] - contract[2])}</td><td>${duration(contract[3], contract[4])} days</td></tr>`
+          );
+        });
+
+        document.querySelector("#summaryTender").textContent = money.format(tender);
+        document.querySelector("#summaryPaid").textContent = money.format(paid);
+        document.querySelector("#summaryBalance").textContent = money.format(tender - paid);
+        document.querySelector("#summaryDuration").textContent = `${days} days`;
+      }
+
+      document.querySelector("#contractForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        contracts.push([
+          document.querySelector("#company").value,
+          Number(document.querySelector("#tenderAmount").value),
+          Number(document.querySelector("#amountPaid").value),
+          document.querySelector("#startDate").value,
+          document.querySelector("#endDate").value,
+        ]);
+        event.target.reset();
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
