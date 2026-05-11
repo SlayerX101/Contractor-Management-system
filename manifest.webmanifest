@@ -1,0 +1,19 @@
+{
+  "name": "Contractor Management System",
+  "short_name": "Contracts",
+  "description": "Track electrical tenders, payments, balances, and project timelines.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eff4f2",
+  "theme_color": "#0f766e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
