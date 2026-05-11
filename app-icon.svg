@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Contractor Management System">
+  <rect width="512" height="512" rx="112" fill="#0f766e" />
+  <path fill="#ffffff" d="M144 122h224c22 0 40 18 40 40v252c0 22-18 40-40 40H144c-22 0-40-18-40-40V162c0-22 18-40 40-40Zm0 42v250h224V164H144Z" />
+  <path fill="#e3b341" d="M183 208h146v34H183v-34Zm0 70h146v34H183v-34Zm0 70h92v34h-92v-34Z" />
+  <path fill="#ffffff" d="m313 345 56-91h-43l20-73-73 100h44l-4 64Z" />
+</svg>
