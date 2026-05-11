@@ -275,10 +275,10 @@ function renderPayments() {
   payments.forEach((payment) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${escapeHtml(payment.date)}</td>
-      <td>${escapeHtml(payment.company)}</td>
-      <td>${money.format(payment.amount)}</td>
-      <td class="no-print"><button class="small-button delete" type="button">Delete</button></td>
+      <td data-label="Date">${escapeHtml(payment.date)}</td>
+      <td data-label="Company">${escapeHtml(payment.company)}</td>
+      <td data-label="Payment">${money.format(payment.amount)}</td>
+      <td class="no-print" data-label="Action"><button class="small-button delete" type="button">Delete</button></td>
     `;
     row.querySelector("button").addEventListener("click", () => deletePayment(payment.contractId, payment.id));
     elements.paymentsTable.appendChild(row);
@@ -446,3 +446,11 @@ elements.printBtn.addEventListener("click", () => window.print());
 elements.paymentDate.value = new Date().toISOString().slice(0, 10);
 render();
 updateLiveBalance();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch((error) => {
+      console.warn("Service worker registration failed.", error);
+    });
+  });
+}
