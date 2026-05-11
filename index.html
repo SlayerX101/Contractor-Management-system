@@ -2,8 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Contracts" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Contracts" />
+    <meta
+      name="description"
+      content="Mobile-ready contractor dashboard for tracking electrical tenders, payments, balances, and project duration."
+    />
     <title>Contractor Management System</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="app-icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="app-icon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -69,7 +82,7 @@
       </section>
 
       <section class="layout">
-        <aside class="panel contract-editor no-print">
+        <aside id="add-contract" class="panel contract-editor no-print">
           <div class="section-heading">
             <h2 id="formTitle">Add Contract</h2>
             <p>Balance and progress calculate automatically.</p>
@@ -131,7 +144,7 @@
           </form>
         </aside>
 
-        <section class="panel">
+        <section id="contracts" class="panel">
           <div class="section-heading">
             <h2>Contracts</h2>
             <p id="contractCount">0 contracts</p>
@@ -142,7 +155,7 @@
         </section>
       </section>
 
-      <section class="panel">
+      <section id="payments" class="panel">
         <div class="section-heading">
           <h2>Payment Register</h2>
           <p>Record part payments against each contract.</p>
@@ -179,6 +192,12 @@
         </div>
       </section>
     </main>
+
+    <nav class="mobile-nav no-print" aria-label="Mobile shortcuts">
+      <a href="#add-contract">Add</a>
+      <a href="#contracts">Contracts</a>
+      <a href="#payments">Payments</a>
+    </nav>
 
     <template id="contractCardTemplate">
       <article class="contract-card">
